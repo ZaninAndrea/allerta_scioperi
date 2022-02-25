@@ -21,7 +21,7 @@ const regioniInteressanti = [
     "Trentino-Alto Adige",
 ]
 const provincieInteressanti = ["Tutte", "Milano", "Trento", "Torino"]
-const ALERT_DAYS = -1
+const ALERT_DAYS = 7
 
 function sendEmail(
     from,
