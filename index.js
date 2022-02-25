@@ -97,20 +97,22 @@ async function main() {
                 item.diff < (ALERT_DAYS + 0.5) * 24 * 3600 * 1000
         )
 
-    let emailHTML =
-        "Tra una settimana sono indetti i seguenti scioperi:<br/><br/>"
-    for (let item of parsedItems) {
-        emailHTML += item.source.content + "<br/><br/>"
-    }
-    emailHTML += `Per altre informazioni clicca <a href="http://scioperi.mit.gov.it/mit2/public/scioperi">qui</a>`
+    if (parsedItems.length > 0) {
+        let emailHTML =
+            "Tra una settimana sono indetti i seguenti scioperi:<br/><br/>"
+        for (let item of parsedItems) {
+            emailHTML += item.source.content + "<br/><br/>"
+        }
+        emailHTML += `Per altre informazioni clicca <a href="http://scioperi.mit.gov.it/mit2/public/scioperi">qui</a>`
 
-    sendEmail(
-        "scioperi@baida.dev",
-        ["99.zanin@gmail.com"],
-        "Allerta Sciopero",
-        emailHTML,
-        "Tra una settimana sono indetti i seguenti scioperi"
-    )
+        sendEmail(
+            "scioperi@baida.dev",
+            ["99.zanin@gmail.com"],
+            "Allerta Sciopero",
+            emailHTML,
+            "Tra una settimana sono indetti i seguenti scioperi"
+        )
+    }
 }
 
 main()
