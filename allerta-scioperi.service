@@ -1,0 +1,10 @@
+[Unit]
+Description=Allerta Scioperi
+
+[Service]
+Type=simple
+User=root
+ExecStart=/snap/bin/node index.js
+WorkingDirectory=/home/andrea/cronjobs/allerta_scioperi
+KillMode=process
+TimeoutSec=900
