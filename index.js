@@ -13,14 +13,14 @@ const settoriInteressanti = [
     "Intersettoriale",
     "Trasporto pubblico locale",
 ]
-const rilevanzeInteressanti = ["Nazionale", "Interregionale", "Da definere"]
+const rilevanzeInteressanti = ["Nazionale", "Interregionale", "Da definire"]
 const regioniInteressanti = [
     "Italia",
     "Lombardia",
-    "Piemonte",
+    "Veneto",
     "Trentino-Alto Adige",
 ]
-const provincieInteressanti = ["Tutte", "Milano", "Trento", "Torino"]
+const provincieInteressanti = ["Tutte", "Milano", "Trento", "Verona"]
 const ALERT_DAYS = 7
 
 function sendEmail(
@@ -90,16 +90,19 @@ async function main() {
         .map((item) => ({
             ...item,
             diff: dayjs(item["Data inizio"], "DD/MM/YYYY").diff(dayjs()),
+            diffRicezione: dayjs().diff(
+                dayjs(item["Data ricezione"], "DD/MM/YYYY")
+            ),
         }))
         .filter(
             (item) =>
-                item.diff > (ALERT_DAYS - 0.5) * 24 * 3600 * 1000 &&
-                item.diff < (ALERT_DAYS + 0.5) * 24 * 3600 * 1000
+                item.diff < (ALERT_DAYS + 0.5) * 24 * 3600 * 1000 &&
+                (item.diff > (ALERT_DAYS - 0.5) * 24 * 3600 * 1000 ||
+                    item.diffRicezione < 0.5 * 24 * 3600 * 1000)
         )
 
     if (parsedItems.length > 0) {
-        let emailHTML =
-            "Tra una settimana sono indetti i seguenti scioperi:<br/><br/>"
+        let emailHTML = "Sono indetti i seguenti scioperi:<br/><br/>"
         for (let item of parsedItems) {
             emailHTML += item.source.content + "<br/><br/>"
         }
@@ -107,10 +110,14 @@ async function main() {
 
         sendEmail(
             "scioperi@baida.dev",
-            ["99.zanin@gmail.com"],
+            [
+                "99.zanin@gmail.com",
+                "sofiacozzaglio@hotmail.com",
+                "nemagleba@gmail.com",
+            ],
             "Allerta Sciopero",
             emailHTML,
-            "Tra una settimana sono indetti i seguenti scioperi"
+            "Sono indetti i seguenti scioperi"
         )
     }
 }
