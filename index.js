@@ -53,10 +53,12 @@ function sendEmail(
 }
 
 async function main() {
+    console.log("Fetching data")
     let feed = await parser.parseURL(
         "http://scioperi.mit.gov.it/mit2/public/scioperi/rss"
     )
 
+    console.log("Parsing data")
     let parsedItems = feed.items
         .map((item) => {
             const lines = item.contentSnippet.split("\n")
@@ -102,6 +104,8 @@ async function main() {
         )
 
     if (parsedItems.length > 0) {
+        console.log("Sending email")
+
         let emailHTML = "Sono indetti i seguenti scioperi:<br/><br/>"
         for (let item of parsedItems) {
             emailHTML += item.source.content + "<br/><br/>"
@@ -119,6 +123,8 @@ async function main() {
             emailHTML,
             "Sono indetti i seguenti scioperi"
         )
+    } else {
+        console.log("No email to send")
     }
 }
 
